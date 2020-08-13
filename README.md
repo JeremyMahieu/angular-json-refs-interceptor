@@ -2,6 +2,7 @@
 Interceptor for Angular when using Json.NET's PreserveReferencesHandling
 
 ## Usage
+### In .NET
 In the `Startup.cs` file of your .NET project (web API), add the `PreserveReferencesHandling` option to Json Newtonsoft. Don't forget to do the same for SignalR if you use it.
 ```c#
 services.AddControllers().AddNewtonsoftJson(o =>
@@ -9,10 +10,15 @@ services.AddControllers().AddNewtonsoftJson(o =>
     o.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
 });
 ```
-In your angular project, in `app.module.ts`, use the interceptor.
+
+### In Angular
+Install the package
+`npm install angular-json-refs-interceptor`
+
+In `app.module.ts`, use the interceptor.
 
   ```Typescript
-  import { RefsInterceptor } from './interceptors/refs.interceptor';
+  import { RefsInterceptor } from 'angular-json-refs-interceptor';
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RefsInterceptor, multi: true },
