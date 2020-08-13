@@ -3,28 +3,31 @@ import {
     HttpHandler,
     HttpEvent,
     HttpInterceptor,
-    HttpResponse
+    HttpResponse,
+    HttpResponseBase
   } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 export class RefsInterceptor implements HttpInterceptor {
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
-            filter(event => event instanceof HttpResponse),
-            tap((event: HttpResponse<any>) => {
-                  this.resolveReferences(event.body);
-              })
+            map(event => {
+                if (event.constructor && event.constructor.name == "HttpResponse") { // Cannot use instanceof because types from this package do not equal the types of the user
+                    event = (event as HttpResponse<any>).clone({ body: this.resolveReferences((event as HttpResponse<any>).body) });
+                }
+                return event;
+            })
         );
     }
 
-    private resolveReferences(json) {
+    private resolveReferences(json: any) {
         if (typeof json === 'string') {
             json = JSON.parse(json);
         }
-        const byid = {}; // all objects by id
+        const byid: any = {}; // all objects by id
         const refs = []; // references to objects that could not be resolved
-        json = (function recurse(obj, prop, parent) {
+        json = (function recurse(obj: any, prop?: string | number, parent?: any) {
             if (typeof obj !== 'object' || !obj) { // a primitive value
                 return obj;
             }
@@ -58,8 +61,9 @@ export class RefsInterceptor implements HttpInterceptor {
                     obj = obj.$values.map(recurse);
                 }
                 else { // a plain object
+                    // tslint:disable-next-line: forin
                     for (const prop2 in obj) {
-                        obj[prop2] = recurse(obj[prop2], prop2, obj);
+                       obj[prop2] = recurse(obj[prop2], prop2, obj);
                     }
                 }
                 byid[id] = obj;

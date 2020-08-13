@@ -1,0 +1,27 @@
+{
+  "name": "angular-json-refs-interceptor",
+  "version": "1.0.0",
+  "description": "Interceptor for Angular when using Json.NET's PreserveReferencesHandling",
+  "main": "dist/refs.interceptor.js",
+  "types": "dist/refs.interceptor.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AStove/angular-json-refs-interceptor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AStove/angular-json-refs-interceptor/issues"
+  },
+  "homepage": "https://github.com/AStove/angular-json-refs-interceptor#readme",
+  "dependencies": {
+    "@angular/common": "^10.0.9",
+    "@angular/core": "^10.0.9",
+    "rxjs": "^6.6.2"
+  }
+}
