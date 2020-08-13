@@ -9,7 +9,7 @@ services.AddControllers().AddNewtonsoftJson(o =>
     o.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
 });
 ```
-In your angular project in the `app.module.ts`, use the interceptor
+In your angular project, in `app.module.ts`, use the interceptor.
 
   ```Typescript
   import { RefsInterceptor } from './interceptors/refs.interceptor';
