@@ -1,4 +1,4 @@
-# angular-json-refs-interceptor
+# angular-json-refs-interceptor [![npm version](http://img.shields.io/npm/v/angular-json-refs-interceptor.svg?style=flat)](https://npmjs.org/package/angular-json-refs-interceptor "View this project on npm")
 Interceptor for Angular when using Json.NET's PreserveReferencesHandling
 
 ## Usage
