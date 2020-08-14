@@ -1,5 +1,7 @@
 # angular-json-refs-interceptor [![npm version](http://img.shields.io/npm/v/angular-json-refs-interceptor.svg?style=flat)](https://npmjs.org/package/angular-json-refs-interceptor "View this project on npm")
-Interceptor for Angular when using Json.NET's PreserveReferencesHandling
+Interceptor for Angular when using Json.NET's PreserveReferencesHandling. This interceptor takes the output of Newtonsoft's Serializer. This output contains `$ref` and `$id` tags. The interceptor links all the objects together gain in the proper order. Doing this it's possible to have the original circular references you might have in .NET.
+
+This is especially usefull for projects that use efcore in the backend. Due to automatically fix-up navigation properties, there can easily be many circular references. Because of [known issues](https://github.com/JamesNK/Newtonsoft.Json/issues/1929) the serializer does not handle circular references well.
 
 ## Usage
 ### In .NET
