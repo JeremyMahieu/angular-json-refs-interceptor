@@ -1,6 +1,6 @@
 {
   "name": "angular-json-refs-interceptor",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Interceptor for Angular when using Json.NET's PreserveReferencesHandling",
   "main": "dist/refs.interceptor.js",
   "types": "dist/refs.interceptor.d.ts",
@@ -20,9 +20,12 @@
   },
   "homepage": "https://github.com/AStove/angular-json-refs-interceptor#readme",
   "dependencies": {
-    "@angular/common": "^10.0.9",
-    "@angular/core": "^10.0.9",
+    "@angular/common": "^16.0.2",
+    "@angular/core": "^16.0.2",
     "jspon": "^1.0.1",
-    "rxjs": "^6.6.2"
+    "rxjs": "^7.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
   }
 }
