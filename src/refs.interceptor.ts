@@ -69,6 +69,7 @@ export class RefsInterceptor implements HttpInterceptor {
                 byid[id] = obj;
                 if ('$values' in obj) { // an array
                     obj = obj.$values.map(recurse);
+                    byid[id] = obj;
                 }
                 else { // a plain object
                     // tslint:disable-next-line: forin
