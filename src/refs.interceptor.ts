@@ -6,7 +6,7 @@ import {
     HttpResponse
   } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import * as JSPON from 'jspon';
 
 export class RefsInterceptor implements HttpInterceptor {
@@ -66,7 +66,6 @@ export class RefsInterceptor implements HttpInterceptor {
             } else if ('$id' in obj) {
                 const id = obj.$id;
                 delete obj.$id;
-                byid[id] = obj;
                 if ('$values' in obj) { // an array
                     obj = obj.$values.map(recurse);
                     byid[id] = obj;
@@ -77,6 +76,7 @@ export class RefsInterceptor implements HttpInterceptor {
                        obj[prop2] = recurse(obj[prop2], prop2, obj);
                     }
                 }
+                byid[id] = obj;
             }
             return obj;
         })(json); // run it!
@@ -89,16 +89,21 @@ export class RefsInterceptor implements HttpInterceptor {
     }
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(RefsInterceptor.generateReferencesRequest(req)).pipe(
-            map(event => {
-                // Cannot use instanceof because types from this package do not equal the types of the user
-                // tslint:disable-next-line: no-string-literal
-                if (event['status']) {
-                    event = (event as HttpResponse<any>).clone({
-                        body: RefsInterceptor.resolveReferences((event as HttpResponse<any>).body)
-                    });
+        if (req.body && typeof req.body !== 'string' && !(req.body instanceof FormData)) {
+            req = req.clone({
+                body: RefsInterceptor.generateReferences(req.body),
+                setHeaders: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        return next.handle(req).pipe(
+            filter(event => event instanceof HttpResponse),
+            map((event: HttpResponse<any>) => {
+                if (typeof event.body == 'object') {
+                    return event.clone({ body: RefsInterceptor.resolveReferences(event.body) })
+                } else {
+                    return event;
                 }
-                return event;
             })
         );
     }
