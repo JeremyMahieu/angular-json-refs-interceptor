@@ -66,6 +66,7 @@ export class RefsInterceptor implements HttpInterceptor {
             } else if ('$id' in obj) {
                 const id = obj.$id;
                 delete obj.$id;
+                byid[id] = obj;
                 if ('$values' in obj) { // an array
                     obj = obj.$values.map(recurse);
                 }
@@ -75,7 +76,6 @@ export class RefsInterceptor implements HttpInterceptor {
                        obj[prop2] = recurse(obj[prop2], prop2, obj);
                     }
                 }
-                byid[id] = obj;
             }
             return obj;
         })(json); // run it!
