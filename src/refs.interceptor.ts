@@ -32,7 +32,11 @@ export class RefsInterceptor implements HttpInterceptor {
 
     static resolveReferences(json: any): any {
         if (typeof json === 'string') {
-            json = JSON.parse(json);
+            try {
+                json = JSON.parse(json);
+            } catch {
+                return json;
+            }   
         }
         const byid: any = {}; // all objects by id
         const refs: any[] = []; // references to objects that could not be resolved
